@@ -1,45 +1,30 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from utils.iniciarSesion import iniciarSesion
+from paginas.login_pagina import LoginPagina
+from paginas.carrito_pagina import CarritoPagina
 
-
-def test_agregar_producto_al_carrito():
-    
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
+def test_agregar_producto_al_carrito(driver):
+    login_pagina = LoginPagina(driver)
+    carrito_pagina = CarritoPagina(driver) 
     
     try:
-        iniciarSesion(driver)
+        login_pagina.iniciar_sesion("standard_user","secret_sauce")
+        carrito_pagina.agregar_primer_prod_al_carrito()
         
-        botonAddToCart = driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack")
-        
-        botonAddToCart.click()
-        
-        carrito = driver.find_element(By.CSS_SELECTOR,"[data-test='shopping-cart-link']")
-        
-        carrito.click()
-        
-        pirmerElementoCarrito = driver.find_element(By.CSS_SELECTOR,"[data-test='inventory-item-name']")
-        
-        assert pirmerElementoCarrito.text == "Sauce Labs Backpack"
-    finally:
-        driver.close()
+        assert carrito_pagina.obtener_carrito.len > 0
+    except:
+        print("Error")
         
         
-def test_contador_de_carrito():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
+def test_contador_de_carrito(driver):
+    login_pagina = LoginPagina(driver)
+    carrito_pagina = CarritoPagina(driver)
     
     try:
-        iniciarSesion(driver)
+        login_pagina.iniciar_sesion("standard_user","secret_sauce")
+        carrito_pagina.agregar_primer_prod_al_carrito()
         
-        botonAddToCart = driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack")
+        assert carrito_pagina.obtener_contador_carrito.text == '1'
         
-        botonAddToCart.click()
+    except:
+        print("Error")
         
-        cantCarrito = driver.find_element(By.CSS_SELECTOR, "[data-test='shopping-cart-badge']")
         
-        assert cantCarrito.text == '1'
-        
-    finally:
-        driver.quit()

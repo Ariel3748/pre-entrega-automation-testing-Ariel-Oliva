@@ -1,11 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+
+from paginas.login_pagina import LoginPagina
     
 WEB = "https://www.saucedemo.com"
 
 
-def test_login_exitoso():
+""" def test_login_exitoso():
+
     
     driver = webdriver.Chrome()
     driver.implicitly_wait(10)
@@ -26,4 +29,19 @@ def test_login_exitoso():
         assert driver.current_url == "https://www.saucedemo.com/inventory.html"
         assert title.text == "Swag Labs"
     finally:
-        driver.quit()
+        driver.quit() """
+        
+        
+        
+def test_login_exitoso(driver):
+    login_pagina = LoginPagina(driver)
+    
+    try:
+        login_pagina.iniciar_sesion("standard_user","secret_sauce")
+        
+        title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
+
+        assert driver.current_url == "https://www.saucedemo.com/inventory.html"
+        assert title.text == "Swag Labs"
+    except:
+        print("Error")

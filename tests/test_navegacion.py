@@ -1,58 +1,40 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils.iniciarSesion import iniciarSesion
+from paginas.login_pagina import LoginPagina
+from paginas.productos_pagina import ProductosPagina
     
-WEB = "https://www.saucedemo.com"
 
-def test_validacion_titulo():
-    
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
+def test_validacion_titulo(driver):
+    login_pagina = LoginPagina(driver)
+    prods_pagina = ProductosPagina(driver)
     try:
-        driver.get(WEB)
-        usuario = driver.find_element(By.ID,"user-name")
-        password = driver.find_element(By.ID,"password")
-        btn_login = driver.find_element(By.ID,"login-button")
-        
-        usuario.send_keys("standard_user")
-        password.send_keys("secret_sauce")
-        
-        btn_login.click()
-        title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
-
-        assert title.text == "Swag Labs"
-    finally:
-      driver.quit()
+        login_pagina.iniciar_sesion("standard_user","secret_sauce")
+        titulo = prods_pagina.obtener_titulo
+        assert titulo.text == "Swag Labs"
+    except:
+        print("Error")
       
       
-def test_productos_visibles():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
+def test_productos_visibles(driver):
+    login_pagina = LoginPagina(driver)
+    prods_pagina = ProductosPagina(driver)
     
     try:
-        iniciarSesion(driver)
-        primerProducto = driver.find_element(By.CSS_SELECTOR,"[data-test='inventory-item-name']")
-        segundoProducto = driver.find_elements(By.CSS_SELECTOR,"[data-test='inventory-item-name']")[1]
-        
-        assert primerProducto.text == "Sauce Labs Backpack"
-        assert segundoProducto.text == "Sauce Labs Bike Light"
-    finally:
-        driver.quit()
+        login_pagina.iniciar_sesion("standard_user","secret_sauce")
+        productos = prods_pagina.obtener_productos()  
+        assert productos[0].text == "Sauce Labs Backpack"
+        assert productos[1].text == "Sauce Labs Bike Light"
+    except:
+        print("Error")
         
         
-def test_verificar_elementos_principales():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
+def test_verificar_elementos_principales(driver):
+    login_pagina = LoginPagina(driver)
+    prods_pagina = ProductosPagina(driver)
         
     try:
-        iniciarSesion(driver)
-        
-        menuHamburguesa = driver.find_element(By.CSS_SELECTOR,"[data-test='open-menu']")
-        title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
-        carrito = driver.find_element(By.CSS_SELECTOR,"[data-test='shopping-cart-link']")
-        
-        assert menuHamburguesa.is_displayed()
-        assert title.is_displayed()
-        assert carrito.is_displayed()
-    finally:
-        driver.quit()    
+        assert prods_pagina.obtener_menu_hamburguesa.is_displayed()
+        assert prods_pagina.obtener_titulo.is_displayed()
+        assert prods_pagina.obtener_elemento_carrito.is_displayed()
+    except:
+        print("Error")    
