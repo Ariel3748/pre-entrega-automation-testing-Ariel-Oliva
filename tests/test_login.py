@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pytest
-
+from utils.reader import reader_users_csv
 
 from paginas.login_pagina import LoginPagina
     
@@ -33,15 +33,10 @@ WEB = "https://www.saucedemo.com"
         driver.quit() """
         
         
-@pytest.mark.parametrize("usuario,contrasena",
-                        [
-                            ("standard_user","secret_sauce"),
-                            ("PruebaFail","Prueba_Fail"),
-                            ("PruebaFail2","Prueba_Fail2")   
-                        ])
-def test_login_exitoso(driver, usuario, contrasena):
+@pytest.mark.parametrize("data",reader_users_csv())
+def test_login_exitoso(driver, data):
     login_pagina = LoginPagina(driver) 
-    login_pagina.iniciar_sesion(usuario, contrasena)
+    login_pagina.iniciar_sesion(data["user"],data["password"])
     
     title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
 
