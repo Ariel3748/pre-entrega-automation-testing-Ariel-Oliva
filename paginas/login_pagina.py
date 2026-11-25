@@ -16,3 +16,10 @@ class LoginPagina:
         password.send_keys(contrasena)
         
         btn_login.click()
+        
+    def obtener_cartel_error(self):
+        return(self.driver.find_element(By.CSS_SELECTOR,"[data-test='error']"))
+    
+    def obtener_titulo(self):
+        return self.driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
+    
