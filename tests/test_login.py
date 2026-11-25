@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import pytest
 
 
 from paginas.login_pagina import LoginPagina
@@ -32,16 +33,17 @@ WEB = "https://www.saucedemo.com"
         driver.quit() """
         
         
-        
-def test_login_exitoso(driver):
-    login_pagina = LoginPagina(driver)
+@pytest.mark.parametrize("usuario,contrasena",
+                        [
+                            ("standard_user","secret_sauce"),
+                            ("PruebaFail","Prueba_Fail"),
+                            ("PruebaFail2","Prueba_Fail2")   
+                        ])
+def test_login_exitoso(driver, usuario, contrasena):
+    login_pagina = LoginPagina(driver) 
+    login_pagina.iniciar_sesion(usuario, contrasena)
     
-    try:
-        login_pagina.iniciar_sesion("standard_user","secret_sauce")
-        
-        title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
+    title = driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
 
-        assert driver.current_url == "https://www.saucedemo.com/inventory.html"
-        assert title.text == "Swag Labs"
-    except:
-        print("Error")
+    assert driver.current_url == "https://www.saucedemo.com/inventory.html"
+    assert title.text == "Swag Labs"

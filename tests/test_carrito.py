@@ -5,26 +5,23 @@ def test_agregar_producto_al_carrito(driver):
     login_pagina = LoginPagina(driver)
     carrito_pagina = CarritoPagina(driver) 
     
-    try:
-        login_pagina.iniciar_sesion("standard_user","secret_sauce")
-        carrito_pagina.agregar_primer_prod_al_carrito()
-        
-        assert carrito_pagina.obtener_carrito.len > 0
-    except:
-        print("Error")
+
+    login_pagina.iniciar_sesion("standard_user","secret_sauce")
+    carrito_pagina.agregar_primer_prod_al_carrito()
+    
+    assert len(carrito_pagina.obtener_carrito()) > 0
+
         
         
 def test_contador_de_carrito(driver):
     login_pagina = LoginPagina(driver)
     carrito_pagina = CarritoPagina(driver)
     
-    try:
-        login_pagina.iniciar_sesion("standard_user","secret_sauce")
-        carrito_pagina.agregar_primer_prod_al_carrito()
+
+    login_pagina.iniciar_sesion("standard_user","secret_sauce")
+    carrito_pagina.agregar_primer_prod_al_carrito()
+    
+    assert carrito_pagina.obtener_contador_carrito() == '1'
         
-        assert carrito_pagina.obtener_contador_carrito.text == '1'
-        
-    except:
-        print("Error")
         
         

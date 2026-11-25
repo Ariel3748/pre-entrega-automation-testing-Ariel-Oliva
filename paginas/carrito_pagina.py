@@ -1,9 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 
-
-
-
 class CarritoPagina:
     def __init__(self,driver):
         self.driver = driver
@@ -17,4 +14,4 @@ class CarritoPagina:
           return(self.driver.find_elements(By.CSS_SELECTOR,"[data-test='inventory-item']"))
       
     def obtener_contador_carrito(self):
-        return(self.driver.find_element(By.CSS_SELECTOR, "[data-test='shopping-cart-badge']"))
+        return(self.driver.find_element(By.CSS_SELECTOR, "[data-test='shopping-cart-badge']").text)
