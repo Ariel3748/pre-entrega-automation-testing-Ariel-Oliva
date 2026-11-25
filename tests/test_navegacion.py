@@ -9,7 +9,7 @@ def test_validacion_titulo(driver):
     prods_pagina = ProductosPagina(driver)
 
     login_pagina.iniciar_sesion("standard_user","secret_sauce")
-    titulo = prods_pagina.obtener_titulo
+    titulo = prods_pagina.obtener_titulo()
     assert titulo.text == "Swag Labs"
 
       
@@ -28,8 +28,8 @@ def test_verificar_elementos_principales(driver):
     login_pagina = LoginPagina(driver)
     prods_pagina = ProductosPagina(driver)
         
-
-    assert prods_pagina.obtener_menu_hamburguesa.is_displayed()
-    assert prods_pagina.obtener_titulo.is_displayed()
-    assert prods_pagina.obtener_elemento_carrito.is_displayed()
+    login_pagina.iniciar_sesion("standard_user","secret_sauce")
+    assert prods_pagina.obtener_menu_hamburguesa().is_displayed()
+    assert prods_pagina.obtener_titulo().is_displayed()
+    assert prods_pagina.obtener_elemento_carrito().is_displayed()
   

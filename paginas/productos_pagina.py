@@ -14,7 +14,7 @@ class ProductosPagina:
     
     def obtener_titulo(self):
         ##Se tiene que haber iniciado sesion
-        self.driver.implicity_wait(5)
+        self.driver.implicitly_wait(5)
         
         titulo = self.driver.find_element(By.CSS_SELECTOR,"[data-test='primary-header'] .app_logo")
         
